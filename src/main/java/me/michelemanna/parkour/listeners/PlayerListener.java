@@ -39,6 +39,10 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        if (!parkour.isFinished()) {
+            return;
+        }
+
         ParkourSession session = plugin.getParkourManager().getSession(event.getPlayer());
         if (session == null) {
             plugin.getParkourManager().start(event.getPlayer(), parkour);

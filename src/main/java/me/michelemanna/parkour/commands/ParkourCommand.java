@@ -5,6 +5,7 @@ import me.michelemanna.parkour.commands.subcommands.CheckpointCommand;
 import me.michelemanna.parkour.commands.subcommands.CreateCommand;
 import me.michelemanna.parkour.commands.subcommands.FinishCommand;
 import me.michelemanna.parkour.commands.subcommands.RestartCommand;
+import me.michelemanna.parkour.gui.ParkourMenus;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -32,8 +33,14 @@ public class ParkourCommand implements CommandExecutor {
             return true;
         }
 
+
         if (args.length == 0) {
-            player.sendMessage("§c You must specify a subcommand!");
+            if (player.hasPermission("parkour.admin")) {
+                ParkourMenus.openParkours(player);
+                return true;
+            }
+
+            player.sendMessage("§cYou do not have permission to use this command!");
             return true;
         }
 

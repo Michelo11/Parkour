@@ -77,7 +77,10 @@ public class DatabaseManager {
                     String name = result.getString("name");
                     List<Map<String, Object>> checkpoints = gson.fromJson(result.getString("checkpoint"), List.class);
 
-                    parkours.put(name, new Parkour(id, name, checkpoints.stream().map(Location::deserialize).toList()));
+                    Parkour value = new Parkour(id, name, checkpoints.stream().map(Location::deserialize).toList());
+                    parkours.put(name, value);
+
+                    value.setFinished(true);
                 }
 
                 result.close();
@@ -103,6 +106,25 @@ public class DatabaseManager {
                 statement.setString(1, parkour.getName());
                 statement.setString(2, gson.toJson(parkour.getCheckpoints().stream().map(Location::serialize).toList()));
 
+
+                statement.executeUpdate();
+                statement.close();
+                connection.close();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public void deleteParkour(Parkour parkour) {
+        Bukkit.getScheduler().runTaskAsynchronously(ParkourPlugin.getInstance(), () -> {
+            try {
+                Connection connection = dataSource.getConnection();
+
+                PreparedStatement statement = connection.prepareStatement("DELETE FROM parkours WHERE id = ?;");
+
+                statement.setInt(1, parkour.getId());
 
                 statement.executeUpdate();
                 statement.close();

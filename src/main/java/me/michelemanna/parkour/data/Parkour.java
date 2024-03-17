@@ -9,6 +9,7 @@ public class Parkour {
     private final int id;
     private final String name;
     private final List<Location> checkpoints = new ArrayList<>();
+    private boolean isFinished = false;
 
     public Parkour(int id, String name, List<Location> checkpoints) {
         this.id = id;
@@ -26,5 +27,13 @@ public class Parkour {
 
     public List<Location> getCheckpoints() {
         return checkpoints;
+    }
+
+    public boolean isFinished() {
+        return isFinished;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
     }
 }

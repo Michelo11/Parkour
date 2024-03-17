@@ -25,6 +25,8 @@ public class FinishCommand implements SubCommand {
                 .getDatabase()
                 .createParkour(parkour);
 
+        parkour.setFinished(true);
+
         player.sendMessage("§aFinish created!");
     }
 }
