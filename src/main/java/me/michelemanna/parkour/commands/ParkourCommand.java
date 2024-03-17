@@ -33,7 +33,7 @@ public class ParkourCommand implements CommandExecutor {
         }
 
         if (args.length == 0) {
-            player.sendMessage("§cUsage: /parkour <create|checkpoint|finish|restart>");
+            player.sendMessage("§c You must specify a subcommand!");
             return true;
         }
 

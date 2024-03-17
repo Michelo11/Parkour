@@ -17,6 +17,14 @@ public class PlayerListener implements Listener {
 
     @EventHandler
     public void onMove(PlayerMoveEvent event) {
+        if (event.getTo() == null) return;
+
+        if (event.getFrom().getX() == event.getTo().getX() &&
+                event.getFrom().getY() == event.getTo().getY() &&
+                event.getFrom().getZ() == event.getTo().getZ()) {
+            return;
+        }
+
         Location location = event.getTo().getBlock().getLocation();
 
         Parkour parkour = plugin.getParkourManager()
@@ -31,12 +39,11 @@ public class PlayerListener implements Listener {
             return;
         }
 
-        if (plugin.getParkourManager().getSession(event.getPlayer()) == null) {
+        ParkourSession session = plugin.getParkourManager().getSession(event.getPlayer());
+        if (session == null) {
             plugin.getParkourManager().start(event.getPlayer(), parkour);
             return;
         }
-
-        ParkourSession session = plugin.getParkourManager().getSession(event.getPlayer());
 
         if (!session.getParkour().equals(parkour)) {
             return;
@@ -44,6 +51,8 @@ public class PlayerListener implements Listener {
 
         if ((session.getCheckpointIndex() + 1) == parkour.getCheckpoints().size()) {
             plugin.getParkourManager().finish(event.getPlayer());
+            long time = System.currentTimeMillis() - session.getStartTime();
+            event.getPlayer().sendMessage("§aCongratulations, you finished the parkour in " + time + "ms!");
             return;
         }
 

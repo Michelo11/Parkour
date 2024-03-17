@@ -5,10 +5,12 @@ import org.bukkit.entity.Player;
 public class ParkourSession {
     private final Parkour parkour;
     private int checkpointIndex;
+    private final long startTime;
 
     public ParkourSession(Parkour parkour) {
         this.parkour = parkour;
         this.checkpointIndex = 0;
+        this.startTime = System.currentTimeMillis();
     }
 
     public Parkour getParkour() {
@@ -27,7 +29,7 @@ public class ParkourSession {
         player.teleport(parkour.getCheckpoints().get(checkpointIndex));
     }
 
-    public void restart() {
-        checkpointIndex = 0;
+    public long getStartTime() {
+        return startTime;
     }
 }
