@@ -1,4 +1,9 @@
 name: Parkour
 version: '${version}'
-main: me.michelemanna.parkour.Parkour
+main: me.michelemanna.parkour.ParkourPlugin
 api-version: '1.20'
+commands:
+  parkour:
+    description: Parkour command
+    usage: /parkour
+    aliases: [pk]
