@@ -1,0 +1,4 @@
+name: Parkour
+version: '${version}'
+main: me.michelemanna.parkour.Parkour
+api-version: '1.20'
