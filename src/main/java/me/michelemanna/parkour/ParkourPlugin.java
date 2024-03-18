@@ -1,6 +1,7 @@
 package me.michelemanna.parkour;
 
 import me.michelemanna.parkour.commands.ParkourCommand;
+import me.michelemanna.parkour.listeners.ArmorListener;
 import me.michelemanna.parkour.listeners.PlayerListener;
 import me.michelemanna.parkour.managers.ParkourManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -20,6 +21,7 @@ public final class ParkourPlugin extends JavaPlugin {
 
         getCommand("parkour").setExecutor(new ParkourCommand(this));
         getServer().getPluginManager().registerEvents(new PlayerListener(this), this);
+        getServer().getPluginManager().registerEvents(new ArmorListener(), this);
 
         try {
             this.database = new DatabaseManager(this);

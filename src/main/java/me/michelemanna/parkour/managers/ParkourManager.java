@@ -18,11 +18,18 @@ public class ParkourManager {
     }
 
     public void loadParkours() {
+        parkours.clear();
+        players.clear();
+
         plugin.getDatabase().getParkours().thenAccept(this.parkours::putAll);
     }
 
     public void start(Player player, Parkour parkour) {
         player.teleport(parkour.getCheckpoints().get(0));
+        players.put(player, new ParkourSession(parkour));
+    }
+
+    public void restart(Player player, Parkour parkour) {
         players.put(player, new ParkourSession(parkour));
     }
 

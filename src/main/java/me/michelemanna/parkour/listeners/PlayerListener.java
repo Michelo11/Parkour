@@ -53,6 +53,11 @@ public class PlayerListener implements Listener {
             return;
         }
 
+        if (parkour.getCheckpoints().indexOf(location) == 0) {
+            plugin.getParkourManager().restart(event.getPlayer(), parkour);
+            return;
+        }
+
         if ((session.getCheckpointIndex() + 1) == parkour.getCheckpoints().size()) {
             plugin.getParkourManager().finish(event.getPlayer());
             long time = System.currentTimeMillis() - session.getStartTime();

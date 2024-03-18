@@ -8,6 +8,8 @@ import me.michelemanna.parkour.data.Parkour;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -111,6 +113,7 @@ public class DatabaseManager {
                 statement.close();
                 connection.close();
 
+                ParkourPlugin.getInstance().getParkourManager().loadParkours();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -130,6 +133,15 @@ public class DatabaseManager {
                 statement.close();
                 connection.close();
 
+                Bukkit.getScheduler().runTask(ParkourPlugin.getInstance(), () -> {
+                    parkour.getCheckpoints()
+                            .forEach(location -> location.getWorld().getNearbyEntities(location, 3, 3, 3, entity -> entity instanceof ArmorStand &&
+                                            entity.getCustomName() != null &&
+                                            entity.getCustomName().contains("Checkpoint"))
+                                    .forEach(Entity::remove));
+                });
+
+                ParkourPlugin.getInstance().getParkourManager().getParkours().remove(parkour.getName());
             } catch (SQLException e) {
                 e.printStackTrace();
             }
