@@ -27,10 +27,6 @@ dependencies {
     implementation "xyz.xenondevs.invui:invui:1.26"
 }
 
-shadowJar {
-    relocate("de.tr7zw.changeme.nbtapi", "me.michelemanna.region.nbtapi")
-}
-
 def targetJavaVersion = 17
 java {
     def javaVersion = JavaVersion.toVersion(targetJavaVersion)
