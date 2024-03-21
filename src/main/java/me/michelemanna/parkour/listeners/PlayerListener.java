@@ -61,7 +61,8 @@ public class PlayerListener implements Listener {
         if ((session.getCheckpointIndex() + 1) == parkour.getCheckpoints().size()) {
             plugin.getParkourManager().finish(event.getPlayer());
             long time = System.currentTimeMillis() - session.getStartTime();
-            event.getPlayer().sendMessage("§aCongratulations, you finished the parkour in " + time + "ms!");
+            event.getPlayer().sendMessage(ParkourPlugin.getInstance().getMessage("listeners.parkour-finish")
+                    .replace("%time%", String.valueOf(time / 1000.0)));
             return;
         }
 

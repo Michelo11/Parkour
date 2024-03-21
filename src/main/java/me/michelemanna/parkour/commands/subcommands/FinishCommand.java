@@ -9,7 +9,7 @@ public class FinishCommand implements SubCommand {
     @Override
     public void execute(Player player, String[] args) {
         if (args.length == 1) {
-            player.sendMessage("§cUsage: /parkour finish <parkour>");
+            player.sendMessage(ParkourPlugin.getInstance().getMessage("commands.finish-usage"));
             return;
         }
 
@@ -27,6 +27,6 @@ public class FinishCommand implements SubCommand {
 
         parkour.setFinished(true);
 
-        player.sendMessage("§aFinish created!");
+        player.sendMessage(ParkourPlugin.getInstance().getMessage("commands.finish-success"));
     }
 }

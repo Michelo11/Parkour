@@ -11,12 +11,12 @@ public class RestartCommand implements SubCommand {
         ParkourSession session = ParkourPlugin.getInstance().getParkourManager().getSession(player);
 
         if (session == null) {
-            player.sendMessage("§cYou are not in a parkour session.");
+            player.sendMessage(ParkourPlugin.getInstance().getMessage("commands.not-in-parkour"));
             return;
         }
 
         session.teleport(player);
 
-        player.sendMessage("§aYou have restarted the parkour.");
+        player.sendMessage(ParkourPlugin.getInstance().getMessage("commands.restart"));
     }
 }

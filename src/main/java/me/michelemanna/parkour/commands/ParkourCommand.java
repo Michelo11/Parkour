@@ -1,10 +1,7 @@
 package me.michelemanna.parkour.commands;
 
 import me.michelemanna.parkour.ParkourPlugin;
-import me.michelemanna.parkour.commands.subcommands.CheckpointCommand;
-import me.michelemanna.parkour.commands.subcommands.CreateCommand;
-import me.michelemanna.parkour.commands.subcommands.FinishCommand;
-import me.michelemanna.parkour.commands.subcommands.RestartCommand;
+import me.michelemanna.parkour.commands.subcommands.*;
 import me.michelemanna.parkour.gui.ParkourMenus;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,12 +21,13 @@ public class ParkourCommand implements CommandExecutor {
         this.subCommands.put("checkpoint", new CheckpointCommand());
         this.subCommands.put("finish", new FinishCommand());
         this.subCommands.put("restart", new RestartCommand());
+        this.subCommands.put("help", new HelpCommand());
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage("§cOnly players can use this command!");
+            sender.sendMessage(ParkourPlugin.getInstance().getMessage("commands.player-only"));
             return true;
         }
 
@@ -40,7 +38,7 @@ public class ParkourCommand implements CommandExecutor {
                 return true;
             }
 
-            player.sendMessage("§cYou do not have permission to use this command!");
+            player.sendMessage(ParkourPlugin.getInstance().getMessage("commands.no-permission"));
             return true;
         }
 

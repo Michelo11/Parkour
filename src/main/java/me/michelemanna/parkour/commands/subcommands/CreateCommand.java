@@ -11,7 +11,7 @@ public class CreateCommand implements SubCommand {
     @Override
     public void execute(Player player, String[] args) {
         if (args.length == 1) {
-            player.sendMessage("§cUsage: /parkour create <parkour>");
+            player.sendMessage(ParkourPlugin.getInstance().getMessage("commands.create-usage"));
             return;
         }
 
@@ -20,6 +20,6 @@ public class CreateCommand implements SubCommand {
                 .getParkourManager()
                 .getParkours().put(args[1], new Parkour(-1, args[1], List.of(player.getLocation().getBlock().getLocation())));
 
-        player.sendMessage("§aParkour created!");
+        player.sendMessage(ParkourPlugin.getInstance().getMessage("commands.create-success"));
     }
 }

@@ -1,4 +1,4 @@
-# This file is used to configure the database connection
+# Database configuration
 mysql:
   host: "localhost"
   port: 3306
@@ -6,3 +6,22 @@ mysql:
   password: "example"
   database: "parkour"
   ssl: false
+
+# Messages configuration
+messages:
+  commands:
+    player-only: "&cThis command can only be executed by a player."
+    no-permission: "&cYou do not have permission to execute this command."
+    checkpoint-usage: "&cUsage: /checkpoint <parkour>"
+    checkpoint-created: "&aCheckpoint created."
+    create-usage: "&cUsage: /create <parkour>"
+    create-success: "&aParkour created."
+    finish-usage: "&cUsage: /finish <parkour>"
+    finish-success: "&aFinish created."
+    not-in-parkour: "&cYou are not in a parkour session."
+    restart: "&aYou have restarted the parkour."
+  gui:
+    no-parkours: "&cThere are no parkours to display."
+    parkour-deleted: "&aParkour deleted."
+  listeners:
+    parkour-finish: "&aCongratulations! You have finished the parkour in &e%time%&a ms."

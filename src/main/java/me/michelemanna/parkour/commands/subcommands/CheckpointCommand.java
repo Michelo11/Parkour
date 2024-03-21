@@ -10,7 +10,7 @@ public class CheckpointCommand implements SubCommand {
     @Override
     public void execute(Player player, String[] args) {
         if (args.length == 1) {
-            player.sendMessage("§cUsage: /parkour checkpoint <parkour>");
+            player.sendMessage(ParkourPlugin.getInstance().getMessage("commands.checkpoint-usage"));
             return;
         }
 
@@ -29,6 +29,6 @@ public class CheckpointCommand implements SubCommand {
         armor.setCustomNameVisible(true);
         armor.setVisible(false);
 
-        player.sendMessage("§aCheckpoint created!");
+        player.sendMessage(ParkourPlugin.getInstance().getMessage("commands.checkpoint-created"));
     }
 }

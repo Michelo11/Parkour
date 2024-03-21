@@ -18,7 +18,7 @@ public class ParkourMenus {
         Map<String, Parkour> parkours = ParkourPlugin.getInstance().getParkourManager().getParkours();
 
         if (parkours.isEmpty()) {
-            player.sendMessage("§cYou don't have any parkour yet.");
+            player.sendMessage(ParkourPlugin.getInstance().getMessage("gui.no-parkours"));
             return;
         }
 

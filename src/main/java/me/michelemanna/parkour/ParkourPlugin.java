@@ -4,6 +4,7 @@ import me.michelemanna.parkour.commands.ParkourCommand;
 import me.michelemanna.parkour.listeners.ArmorListener;
 import me.michelemanna.parkour.listeners.PlayerListener;
 import me.michelemanna.parkour.managers.ParkourManager;
+import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import me.michelemanna.parkour.managers.DatabaseManager;
 
@@ -31,7 +32,10 @@ public final class ParkourPlugin extends JavaPlugin {
         } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    public String getMessage(String path) {
+        return ChatColor.translateAlternateColorCodes('&', this.getConfig().getString("messages." + path, "&cMessage not found"));
     }
 
     @Override

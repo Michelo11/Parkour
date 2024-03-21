@@ -29,7 +29,7 @@ public class ParkourItem extends AbstractItem {
         if (clickType.equals(ClickType.DROP)) {
             ParkourPlugin.getInstance().getDatabase().deleteParkour(parkour);
 
-            player.sendMessage("§aParkour deleted.");
+            player.sendMessage(ParkourPlugin.getInstance().getMessage("gui.parkour-deleted"));
             player.closeInventory();
             return;
         }
