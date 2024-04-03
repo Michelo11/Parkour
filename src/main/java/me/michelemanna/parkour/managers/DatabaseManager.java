@@ -5,12 +5,16 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import me.michelemanna.parkour.ParkourPlugin;
 import me.michelemanna.parkour.data.Parkour;
+import me.michelemanna.parkour.managers.providers.DatabaseProvider;
+import me.michelemanna.parkour.managers.providers.MySQLProvider;
+import me.michelemanna.parkour.managers.providers.SQLiteProvider;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
@@ -19,47 +23,25 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public class DatabaseManager {
-    private final HikariDataSource dataSource;
+    private final DatabaseProvider dataSource;
     private final Gson gson = new Gson();
 
-    public DatabaseManager(ParkourPlugin plugin) throws SQLException, ClassNotFoundException {
-        ConfigurationSection cs = plugin.getConfig().getConfigurationSection("mysql");
+    public DatabaseManager() throws SQLException, ClassNotFoundException, IOException {
+        ConfigurationSection cs = ParkourPlugin.getInstance()
+                .getConfig()
+                .getConfigurationSection("mysql");
         Objects.requireNonNull(cs, "Unable to find the following key: mysql");
-        HikariConfig config = new HikariConfig();
 
-        Class.forName("com.mysql.cj.jdbc.Driver");
+        if (cs.getString("type", "mysql").equalsIgnoreCase("mysql")) {
+            this.dataSource = new MySQLProvider();
+        } else
+            this.dataSource = new SQLiteProvider();
 
-        config.setJdbcUrl("jdbc:mysql://" + cs.getString("host") + ":" + cs.getString("port") + "/" + cs.getString("database"));
-        config.setUsername(cs.getString("username"));
-        config.setPassword(cs.getString("password"));
-        config.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        config.setConnectionTimeout(10000);
-        config.setLeakDetectionThreshold(10000);
-        config.setMaximumPoolSize(10);
-        config.setMaxLifetime(60000);
-        config.setPoolName("ParkourPool");
-        config.addDataSourceProperty("useSSL", cs.getBoolean("ssl"));
-
-        this.dataSource = new HikariDataSource(config);
-
-        Connection connection = dataSource.getConnection();
-
-        Statement statement = connection.createStatement();
-
-        statement.execute(
-                "CREATE TABLE IF NOT EXISTS parkours (" +
-                        "id INT AUTO_INCREMENT PRIMARY KEY," +
-                        "name VARCHAR(36) NOT NULL," +
-                        "checkpoint TEXT" +
-                        ")"
-        );
-
-        statement.close();
-        connection.close();
+        dataSource.connect();
     }
 
-    public void close() {
-        dataSource.close();
+    public void close() throws SQLException {
+        dataSource.disconnect();
     }
 
     @SuppressWarnings("unchecked")
@@ -87,7 +69,7 @@ public class DatabaseManager {
 
                 result.close();
                 statement.close();
-                connection.close();
+                dataSource.closeConnection(connection);
 
                 return parkours;
             } catch (SQLException e) {
@@ -111,7 +93,7 @@ public class DatabaseManager {
 
                 statement.executeUpdate();
                 statement.close();
-                connection.close();
+                dataSource.closeConnection(connection);
 
                 ParkourPlugin.getInstance().getParkourManager().loadParkours();
             } catch (SQLException e) {
@@ -131,7 +113,7 @@ public class DatabaseManager {
 
                 statement.executeUpdate();
                 statement.close();
-                connection.close();
+                dataSource.closeConnection(connection);
 
                 Bukkit.getScheduler().runTask(ParkourPlugin.getInstance(), () -> {
                     parkour.getCheckpoints()

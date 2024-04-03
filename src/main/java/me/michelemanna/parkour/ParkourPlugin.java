@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 import me.michelemanna.parkour.managers.DatabaseManager;
 
+import java.io.IOException;
 import java.sql.SQLException;
 
 public final class ParkourPlugin extends JavaPlugin {
@@ -25,11 +26,11 @@ public final class ParkourPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ArmorListener(), this);
 
         try {
-            this.database = new DatabaseManager(this);
+            this.database = new DatabaseManager();
 
             this.parkourManager = new ParkourManager(this);
             this.parkourManager.loadParkours();
-        } catch (SQLException | ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException | IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -40,7 +41,11 @@ public final class ParkourPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.database.close();
+        try {
+            this.database.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public static ParkourPlugin getInstance() {
