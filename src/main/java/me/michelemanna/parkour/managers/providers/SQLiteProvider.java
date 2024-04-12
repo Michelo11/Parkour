@@ -25,7 +25,7 @@ public class SQLiteProvider implements DatabaseProvider {
 
         statement.execute(
                 "CREATE TABLE IF NOT EXISTS parkours (" +
-                        "id INTEGER AUTOINCREMENT PRIMARY KEY," +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                         "name VARCHAR(36) NOT NULL," +
                         "checkpoint TEXT" +
                         ")"
